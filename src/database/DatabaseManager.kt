@@ -14,16 +14,16 @@ import org.ktorm.entity.toList
 class DatabaseManager {
 
     // config
-    private val hostname = "localhost"
-    private val databaseName = "tododatabase"
-    private val username = "root"
-    private val password = ""
+    private val hostname = "ec2-52-0-67-144.compute-1.amazonaws.com"
+    private val databaseName = "d2b43ethsvo7j5"
+    private val username = "inrphpdxpucniz"
+    private val password = "947dbe8e4e4ffdfd5042ecf878f5998d87bf02cd67283bc1110c54bad51f5372"
 
     //database
     private val todoDatabase: Database
 
     init {
-        val jdbcUrl = "jdbc:mysql://$hostname:3306/$databaseName?user=$username&password=$password&useSSL=false"
+        val jdbcUrl = "jdbc:mysql://$hostname/$databaseName?user=$username&password=$password&useSSL=false"
        // val jdbcUrl = "postgres://inrphpdxpucniz:947dbe8e4e4ffdfd5042ecf878f5998d87bf02cd67283bc1110c54bad51f5372@ec2-52-0-67-144.compute-1.amazonaws.com:5432/d2b43ethsvo7j5"
         todoDatabase = Database.connect(jdbcUrl)
     }
