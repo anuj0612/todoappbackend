@@ -14,10 +14,10 @@ import org.ktorm.entity.toList
 class DatabaseManager {
 
     // config
-    private val hostname = "ec2-52-0-67-144.compute-1.amazonaws.com"
-    private val databaseName = "d2b43ethsvo7j5"
-    private val username = "inrphpdxpucniz"
-    private val password = "947dbe8e4e4ffdfd5042ecf878f5998d87bf02cd67283bc1110c54bad51f5372"
+    private val hostname = "sql6.freemysqlhosting.net"
+    private val databaseName = "sql6428865"
+    private val username = "sql6428865"
+    private val password = "RnJrNyZwMw"
 
     //database
     private val todoDatabase: Database
