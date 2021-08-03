@@ -1,1 +1,1 @@
-web bundle exec rails server -p $PORT
+web: build/install/todoapp/bin/todoapp

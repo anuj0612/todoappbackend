@@ -24,7 +24,6 @@ class DatabaseManager {
 
     init {
         val jdbcUrl = "jdbc:mysql://$hostname/$databaseName?user=$username&password=$password&useSSL=false"
-       // val jdbcUrl = "postgres://inrphpdxpucniz:947dbe8e4e4ffdfd5042ecf878f5998d87bf02cd67283bc1110c54bad51f5372@ec2-52-0-67-144.compute-1.amazonaws.com:5432/d2b43ethsvo7j5"
         todoDatabase = Database.connect(jdbcUrl)
     }
 
