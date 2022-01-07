@@ -2,6 +2,7 @@ package com.todoapp
 
 import com.todoapp.entities.ToDo
 import com.todoapp.entities.ToDoDraft
+import com.todoapp.entities.TodoResponse
 import com.todoapp.repository.InMemoryToDoRepository
 import com.todoapp.repository.MySQLTodoRepository
 import com.todoapp.repository.ToDoRepository
@@ -32,33 +33,37 @@ fun Application.module(testing: Boolean = false) {
         post("/createtodo") {
             val toDoDraft = call.receive<ToDoDraft>()
             val todo = repository.addToDo(toDoDraft)
-            call.respond(todo)
+            val response = TodoResponse(true, "Your todo created", todo)
+            call.respond(response)
         }
 
         // to get all todo list
         get("/todos") {
+            val response = TodoResponse(true, "All todos", repository.getAllToDos())
             call.respond(repository.getAllToDos())
         }
 
         // to get single todo
         get("/todos/{id}") {
             val id = call.parameters["id"]?.toIntOrNull()
-
             if (id == null) {
+                val response = TodoResponse(false, "todo not found", {})
                 call.respond(
                     HttpStatusCode.BadRequest,
-                    "id parameter has to be a number"
+                    response
                 )
                 return@get
             }
             val todo = repository.getToDo(id)
             if (todo == null) {
+                val response = TodoResponse(false, "todo not found", {})
                 call.respond(
                     HttpStatusCode.NotFound,
-                    "Todo not found"
+                    response
                 )
             } else {
-                call.respond(todo)
+                val response = TodoResponse(true, "todo not found", todo)
+                call.respond(response)
             }
         }
 
@@ -67,16 +72,17 @@ fun Application.module(testing: Boolean = false) {
             val todoId = call.parameters["id"]?.toIntOrNull()
             val toDoDraft = call.receive<ToDoDraft>()
             if (todoId == null) {
-                call.respond(HttpStatusCode.BadRequest, "id parameter should be a number!")
+                val response = TodoResponse(false, "id parameter should be a number!", {})
+                call.respond(HttpStatusCode.BadRequest, response)
                 return@put
-
             }
-
             val updated = repository.updateTodo(todoId, toDoDraft)
             if (updated) {
-                call.respond(HttpStatusCode.OK)
+                val response = TodoResponse(true, "updated", {})
+                call.respond(HttpStatusCode.OK, response)
             } else {
-                call.respond(HttpStatusCode.NotFound, "found no todo with this id $todoId")
+                val response = TodoResponse(false, "found no todo with this id $todoId", {})
+                call.respond(HttpStatusCode.NotFound, response)
             }
         }
 
@@ -84,14 +90,17 @@ fun Application.module(testing: Boolean = false) {
         delete("/todos/{id}") {
             val todoId = call.parameters["id"]?.toIntOrNull()
             if (todoId == null) {
-                call.respond(HttpStatusCode.BadRequest, "id parameter should be a number!")
+                val response = TodoResponse(false, "id parameter should be a number!", {})
+                call.respond(HttpStatusCode.BadRequest, response)
                 return@delete
             }
             val removed = repository.removeTodo(todoId)
             if (removed) {
-                call.respond(HttpStatusCode.OK)
+                val response = TodoResponse(true, "Deleted", {})
+                call.respond(HttpStatusCode.OK, response)
             } else {
-                call.respond(HttpStatusCode.NotFound, "Todo not found for id $todoId")
+                val response = TodoResponse(false, "Todo not found for id $todoId", {})
+                call.respond(HttpStatusCode.NotFound, response)
             }
         }
     }
